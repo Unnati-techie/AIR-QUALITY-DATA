@@ -1,0 +1,7 @@
+aiohttp  # async http req
+Flask  # web apps
+python-dotenv  # storing env vars
+Flask-Cors  # cross origin resource sharing-accept requests from diff domains
+Flask-SQLAlchemy  # orm FOR SQL(LIKE PRISMA)
+apscheduler  # IMPORT CRON JOB(MIDNIGHT)
+psycopg2-binary  # PostgreSQL adapter for Python

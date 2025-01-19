@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIR QUALITY DATA (INDIA)</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a0c4ff, #caffbf);
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #006d77, #83c5be);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        main {
+            margin: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #006d77;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #d0f0c0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffafcc, #ffcad4);
+            color: #333;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #ffcad4, #ffafcc);
+        }
+
+        .message {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: red;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header style="text-decoration:underline;color:white;text-align:center;font-family:sans-serif;">
+        Air Quality Data (India)
+    </header>
+    <main>
+       
+        <div class="message" id="message"></div>
+        <div style="text-align:center">
+            <button class="btn" id="load-data">Load Data</button> 
+            <br>
+            <br>
+            <div style="text-align:center;color:crimson">Click here to load latest data...</div>
+        </div>
+        <div class="loader" id="loader"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Unit</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+               
+            </tbody>
+        </table>
+    </main>
+    <script>
+        const loadDataButton = document.getElementById('load-data');
+        const dataTableBody = document.getElementById('data-table-body');
+        const messageBox = document.getElementById('message');
+        const loader = document.getElementById('loader');
+
+        loadDataButton.addEventListener('click', async () => {
+            // Show loader and clear previous data and messages
+            loader.style.display = 'block';
+            dataTableBody.innerHTML = '';
+            messageBox.textContent = '';
+
+            try {
+                // Fetch data from the backend
+                const response = await fetch('http://localhost:5001/data');
+                if (!response.ok) throw new Error('Failed to fetch data from the server.');
+                const data = await response.json();
+                
+                // Hide loader
+                loader.style.display = 'none';
+                
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.city}</td>
+                            <td>${item.country}</td>
+                            <td>${item.parameter}</td>
+                            <td>${item.value}</td>
+                            <td>${item.unit}</td>
+                            <td>${item.timestamp}</td>
+                        `;
+                        dataTableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td colspan="6">No data available</td>`;
+                    dataTableBody.appendChild(row);
+                }
+            } catch (error) {
+                loader.style.display = 'none';
+                messageBox.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>
