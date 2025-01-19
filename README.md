@@ -1,4 +1,4 @@
-# Air Quality Data (India) API
+# Air Quality Data (India)
 
 This project provides a RESTful API to collect, store, and manage air quality data for cities in India. It uses data fetched from the [OpenAQ API](https://openaq.org/) and stores the data in a PostgreSQL database. The application is built using Flask and SQLAlchemy, with asynchronous data fetching using `aiohttp` to efficiently handle large datasets. The collected data can be accessed and queried through a web interface.
 
