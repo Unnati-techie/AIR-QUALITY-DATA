@@ -8,4 +8,4 @@ myvenv/
 __pycache__/
 
 # Ignore seeding file
-*.seed/
+seed.py
