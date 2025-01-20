@@ -178,6 +178,5 @@ def get_data():
         print(f"Error while fetching data: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
