@@ -41,14 +41,9 @@ Follow these steps to set up the project:
 2. **Create and activate a virtual environment**:
    
    **For macOS/Linux**:
-   bash
-   ```python3 -m venv venv```
-   ```source venv/bin/activate```
-
-   **For Windows**:
-   bash
-   ```python -m venv venv```
-   ```.\venv\Scripts\activate```
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
 
 3. **Install the required dependencies**:
    
